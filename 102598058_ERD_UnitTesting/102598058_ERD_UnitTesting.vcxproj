@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+<<<<<<< HEAD
+=======
+  <ItemGroup>
+    <ClCompile Include="..\102598058\AddComponentCmd.cpp" />
+    <ClCompile Include="..\102598058\Attribute.cpp" />
+    <ClCompile Include="..\102598058\Command.cpp" />
+    <ClCompile Include="..\102598058\CommandManager.cpp" />
+    <ClCompile Include="..\102598058\Component.cpp" />
+    <ClCompile Include="..\102598058\ComponentFactory.cpp" />
+    <ClCompile Include="..\102598058\ConnectComponentsCmd.cpp" />
+    <ClCompile Include="..\102598058\Connector.cpp" />
+    <ClCompile Include="..\102598058\DeleteComponentCmd.cpp" />
+    <ClCompile Include="..\102598058\Entity.cpp" />
+    <ClCompile Include="..\102598058\ERModel.cpp" />
+    <ClCompile Include="..\102598058\Node.cpp" />
+    <ClCompile Include="..\102598058\PresentationModel.cpp" />
+    <ClCompile Include="..\102598058\Relationship.cpp" />
+    <ClCompile Include="..\102598058\TextUI.cpp" />
+    <ClCompile Include="AttributeUnitTest.cpp" />
+    <ClCompile Include="ComponentUnitTest.cpp" />
+    <ClCompile Include="ERModelUnitTest.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="sample1.cc" />
+    <ClCompile Include="sample1_unittest.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sample1.h" />
+  </ItemGroup>
+>>>>>>> 88622ec2cbf14a29da311a899ad6a9785346c9bf
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4AF6C5FB-4019-41E4-BB88-66925BA6E9FF}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>My102598058_ERD_UnitTesting</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Binary\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+<<<<<<< HEAD
+      <AdditionalIncludeDirectories>C:\gtest\include;../102598058_ERD;</AdditionalIncludeDirectories>
+=======
+      <AdditionalIncludeDirectories>C:\gtest\include;../102598058;</AdditionalIncludeDirectories>
+>>>>>>> 88622ec2cbf14a29da311a899ad6a9785346c9bf
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>C:\gtest\lib\gtestd.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OptimizeReferences>false</OptimizeReferences>
+      <Profile>true</Profile>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\102598058\AddComponentCmd.cpp" />
+    <ClCompile Include="..\102598058\Attribute.cpp" />
+    <ClCompile Include="..\102598058\Command.cpp" />
+    <ClCompile Include="..\102598058\CommandManager.cpp" />
+    <ClCompile Include="..\102598058\Component.cpp" />
+    <ClCompile Include="..\102598058\ComponentFactory.cpp" />
+    <ClCompile Include="..\102598058\ConnectComponentsCmd.cpp" />
+    <ClCompile Include="..\102598058\Connector.cpp" />
+    <ClCompile Include="..\102598058\DeleteComponentCmd.cpp" />
+    <ClCompile Include="..\102598058\Entity.cpp" />
+    <ClCompile Include="..\102598058\ERModel.cpp" />
+    <ClCompile Include="..\102598058\Node.cpp" />
+    <ClCompile Include="..\102598058\PresentationModel.cpp" />
+    <ClCompile Include="..\102598058\Relationship.cpp" />
+    <ClCompile Include="..\102598058\TextUI.cpp" />
+    <ClCompile Include="AttributeUnitTest.cpp" />
+    <ClCompile Include="ComponentFactoryUnitTest.cpp" />
+    <ClCompile Include="EntityUnitTest.cpp" />
+    <ClCompile Include="ERModelUnitTest.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="RelationshipUnitTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="102598058_ERD_UnitTesting.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

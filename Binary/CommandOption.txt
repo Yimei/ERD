@@ -1,0 +1,4 @@
+102598058_ERD_UnitTesting.exe
+/coverage
+/exclude:std::*
+/exclude:filter_demo_namespace::*
