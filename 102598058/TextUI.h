@@ -12,7 +12,7 @@ public:
 	void action_addCommand();
 	void action_redo();
 	void action_undo();
-	void printHintFile();
+	void loadFileHint();
 private:
 	ERModel* _eRModel;
 	int _firstId;

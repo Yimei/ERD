@@ -268,16 +268,16 @@ void ERModel::loadFile( string _filePath)
 	else 
 		_hint = false;
 }
-void ERModel::displayComponentTable()//show component table
-{
-	cout << "---------------------------------" << endl;
-	cout << " Type |  ID  |  Name  " << endl;
-	cout << "------+------+-------------------" << endl;
-	for (unsigned int i = 0; i < _components.size();i++)
-		cout << "   " << _components[i]->getType() << "  |  "<< setw(2) << _components[i]->getID()  << "  |  " << _components[i]->getText() << endl;
-	cout << "---------------------------------" << endl;
-}
-string ERModel::printHint()
+//void ERModel::displayComponentTable()//show component table
+//{
+//	cout << "---------------------------------" << endl;
+//	cout << " Type |  ID  |  Name  " << endl;
+//	cout << "------+------+-------------------" << endl;
+//	for (unsigned int i = 0; i < _components.size();i++)
+//		cout << "   " << _components[i]->getType() << "  |  "<< setw(2) << _components[i]->getID()  << "  |  " << _components[i]->getText() << endl;
+//	cout << "---------------------------------" << endl;
+//}
+string ERModel::showComponentTable()
 {
 	
 	if (_hint)

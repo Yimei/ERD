@@ -45,7 +45,7 @@ public:
 	void addComponentsFromFile(vector<string>);
 	void addConnectionFromFile(vector<string>);
 	void addPrimaryKeyFromFile(vector<string>);
-	void displayComponentTable();
+	/*void displayComponentTable();*/
 	void displayConnectionTable();
 	void displayEntityTable();
 	void displayAttributeOfEntity();
@@ -80,7 +80,7 @@ public:
 	int getIndexOfComponentID(int);
 	int getIndexOfConnectionsID(int);
 	string getCheckDeleteComponentHint(int);
-	string printHint();
+	string showComponentTable();
 	void setPrimaryKeysVector(Component*);
 	vector<Component*> getPrimaryKeysVector();
 private:

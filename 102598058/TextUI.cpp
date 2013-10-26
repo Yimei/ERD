@@ -45,8 +45,8 @@ void TextUI::processCommand(){
 		cout << "Please input a file path: ";
 		cin >> _filePath;
 		_eRModel->loadFile(_filePath);
-		cout << _eRModel->printHint() << endl;
-			
+
+		cout << _eRModel->showComponentTable() << endl;
 		displayMenu();
 	}
 	else if (_command == SAVE_FILE)
