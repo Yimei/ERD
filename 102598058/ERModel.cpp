@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <sstream>
 #include "AddComponentCmd.h"
 #include "DeleteComponentCmd.h"
 #include "ConnectComponentsCmd.h"
@@ -267,15 +268,43 @@ void ERModel::loadFile( string _filePath)
 	else 
 		_hint = false;
 }
+void ERModel::displayComponentTable()//show component table
+{
+	cout << "---------------------------------" << endl;
+	cout << " Type |  ID  |  Name  " << endl;
+	cout << "------+------+-------------------" << endl;
+	for (unsigned int i = 0; i < _components.size();i++)
+		cout << "   " << _components[i]->getType() << "  |  "<< setw(2) << _components[i]->getID()  << "  |  " << _components[i]->getText() << endl;
+	cout << "---------------------------------" << endl;
+}
 string ERModel::printHint()
 {
+	
 	if (_hint)
 	{
-		return "The ER diagram is displayed as follows:\nComponents: ";
+		string totalTable = "The ER diagram is displayed as follows:\nComponents:\n---------------------------------\nType |  ID  |  Name  \n------+------+-------------------\n";
 		
+		for (unsigned int i = 0; i < _components.size();i++)
+		{
+			totalTable += "   ";
+			totalTable += _components[i]->getType();
+			totalTable += "  |  ";
+			totalTable +=  intToString(_components[i]->getID());
+			totalTable += "  |  ";
+			totalTable += _components[i]->getText();
+			totalTable += "\n";			
+		}
+		
+		return totalTable;
 	}
 	else
 		return "File not found!!";
+}
+string ERModel::intToString(int i) {
+	string stringLine;
+	stringstream ss(stringLine);
+	ss << i;
+	return ss.str();
 }
 void ERModel::inputComponentToFile( ofstream& myfile )
 {
@@ -685,15 +714,7 @@ void ERModel::displayConnectionTable()//show connection table
 		cout << setw(6) << _connections[i]->getID() << "     |  "<<setw(2) << _connections[i+1]->getID() << "  |  "<<setw(2) << _connections[i+2]->getID() << endl;
 	cout << "------------------------------------" << endl;
 }
-void ERModel::displayComponentTable()//show component table
-{
-	cout << "---------------------------------" << endl;
-	cout << " Type |  ID  |  Name  " << endl;
-	cout << "------+------+-------------------" << endl;
-	for (unsigned int i = 0; i < _components.size();i++)
-		cout << "   " << _components[i]->getType() << "  |  "<< setw(2) << _components[i]->getID()  << "  |  " << _components[i]->getText() << endl;
-	cout << "---------------------------------" << endl;
-}
+
 void ERModel::deleteComponent(int id)//delete component
 {
 	setDeleteID(id);

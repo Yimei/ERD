@@ -90,7 +90,7 @@ private:
 	void inputComponentToFile( ofstream& myfile );
 	void inputConnectionToFile( ofstream& myfile );
 	void inputPrimaryKeyFromFile( ofstream& myfile );
-
+	string intToString(int i);
 	CommandManager _commandManager;
 	ERModel* _eRModel;
 	vector<Component*> _components;

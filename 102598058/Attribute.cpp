@@ -22,12 +22,9 @@ bool Attribute::canConnectTo(Component* component){
 	}
 	else
 	{
-<<<<<<< HEAD
 		_connectedEntity.push_back(component);
-=======
 		//return true;
 		connectedEntity.push_back(component);
->>>>>>> 88622ec2cbf14a29da311a899ad6a9785346c9bf
 	}
 }
 vector<Component*> Attribute::getConnections()

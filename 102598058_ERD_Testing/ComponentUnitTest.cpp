@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
-#include "../102598058/Component.h"
-
+#include "Component.h"
 
 class ComponentUnitTest:public::testing::Test
 {
