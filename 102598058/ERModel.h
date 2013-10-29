@@ -29,6 +29,7 @@ class ERModel{
 	FRIEND_TEST(ERModelTest, connectTwoNode);
 	FRIEND_TEST(ERModelTest, createConnector);
 	FRIEND_TEST(ERModelTest, checkExistConnection);
+	
 public:
 	ERModel();
 	virtual ~ERModel();
@@ -46,20 +47,20 @@ public:
 	void addConnectionFromFile(vector<string>);
 	void addPrimaryKeyFromFile(vector<string>);
 	/*void displayComponentTable();*/
-	void displayConnectionTable();
+	string displayConnectionTable();
 	void displayEntityTable();
 	void displayAttributeOfEntity();
 	void updateID();
 	Component* convertIdtoComponent(int);
 	bool existId(int);
 	int checkDeleteComponentIDLoop();
-	void connectTwoNode();
+	void examineTwoNodes();
 	int checkAddConnectionNodeOneLoop();
 	void checkEntityLoop();
-	bool checkAddConnectionNodeTwo();
+	bool checkAddConnectionNodeTwo(string);
 	void setConnectionNodes(int);
 	bool checkExistConnection(vector<int>);//連過的兩個相同node不可再連
-	void createConnector(vector<int>);
+	Component* createConnector();
 	void checkPrimaryKeyLoop();
 	void setPKEntity(int);
 	int getPKEntity();
@@ -80,9 +81,26 @@ public:
 	int getIndexOfComponentID(int);
 	int getIndexOfConnectionsID(int);
 	string getCheckDeleteComponentHint(int);
-	string showComponentTable();
+	string printLoadFileHint();
+	string displayComponentTable();
+	string printSaveFileHint();
 	void setPrimaryKeysVector(Component*);
 	vector<Component*> getPrimaryKeysVector();
+	string checkTypeChar(string type);
+	string whetherToInputTypeAgain();
+	int checkAddConnectionNode(string);
+	bool getHint();
+	void clearConnectionNodesVector();
+	string printConnectNodesHint();
+	void clearCheckConnectHint();
+	void printDisconnectItselfHint(int);
+	void printDisconnectSameTypeHint(int,int);
+	void printDisconnectExistHint(int,int);
+	void printDisconnectConditionHint(int, int);
+	void printConnectedSuccessedHint(int, int);
+	//void setConnectorText(string);
+	void setConnectionsVector();
+	bool getCanConnectBool();
 private:
 	void analyzeComponentFromFile( ifstream& myfile );
 	void analyzeConnectionFromFile( ifstream& myfile );
@@ -108,13 +126,16 @@ private:
 	vector<string> splitStringItem;
 	int _id;
 	int _deleteId;
-	string _nodeIDOne;
-	string _nodeIDTwo;
+	
+	
 	vector<int> _connectionNodesVector;//[0]node1 [1]node2
 	int _entityID;
 	string _checkDeletIdTemp;
 	string _checkDeleteComponentHint;
 	string _line;
 	bool _hint;
+	bool _canConnect;
+	string checkConnectHint;
+	
 };
 #endif

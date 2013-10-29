@@ -18,11 +18,11 @@ void ConnectComponentsCmd::execute()
 {
 	if(_componentCopy==NULL)
 	{
-		_eRModel->connectTwoNode();
-		_componentCopy = _eRModel->clone(CONNECTOR);
+		_eRModel->examineTwoNodes();
+		/*_componentCopy = _eRModel->clone(CONNECTOR);
 		_connectionsCopy.push_back(_componentCopy);
 		_connectionsCopy.push_back(_eRModel->componentsClone(_eRModel->getConnectionsVector()[_eRModel->getConnectionsVector().size()-TWO]->getType(),_eRModel->getConnectionsVector().size()-TWO));
-		_connectionsCopy.push_back(_eRModel->componentsClone(_eRModel->getConnectionsVector()[_eRModel->getConnectionsVector().size()-1]->getType(),_eRModel->getConnectionsVector().size()-1));
+		_connectionsCopy.push_back(_eRModel->componentsClone(_eRModel->getConnectionsVector()[_eRModel->getConnectionsVector().size()-1]->getType(),_eRModel->getConnectionsVector().size()-1));*/
 	}
 	else
 	{

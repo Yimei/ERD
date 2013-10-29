@@ -205,7 +205,7 @@ void ERModel::addConnectionFromFile(vector<string> connectionVectorFromFile)//增
 		_connections.push_back(component);
 	}
 }
-Component* ERModel::convertIdtoComponent(int id)//輸入id 傳出components裡的index
+Component* ERModel::convertIdtoComponent(int id)//輸入id 傳出components裡的 compontent
 {
 	for (unsigned int i = 0; i < _components.size();i++)
 	{
@@ -268,21 +268,10 @@ void ERModel::loadFile( string _filePath)
 	else 
 		_hint = false;
 }
-//void ERModel::displayComponentTable()//show component table
-//{
-//	cout << "---------------------------------" << endl;
-//	cout << " Type |  ID  |  Name  " << endl;
-//	cout << "------+------+-------------------" << endl;
-//	for (unsigned int i = 0; i < _components.size();i++)
-//		cout << "   " << _components[i]->getType() << "  |  "<< setw(2) << _components[i]->getID()  << "  |  " << _components[i]->getText() << endl;
-//	cout << "---------------------------------" << endl;
-//}
-string ERModel::showComponentTable()
+
+string ERModel::displayComponentTable()
 {
-	
-	if (_hint)
-	{
-		string totalTable = "The ER diagram is displayed as follows:\nComponents:\n---------------------------------\nType |  ID  |  Name  \n------+------+-------------------\n";
+	string totalTable = "Components:\n---------------------------------\nType |  ID  |  Name  \n------+------+-------------------\n";
 		
 		for (unsigned int i = 0; i < _components.size();i++)
 		{
@@ -296,6 +285,14 @@ string ERModel::showComponentTable()
 		}
 		
 		return totalTable;
+}
+string ERModel::printLoadFileHint()
+{
+	if (_hint)
+	{
+		string totalHint = "The ER diagram is displayed as follows:\n";
+		totalHint += displayComponentTable();
+		return totalHint;
 	}
 	else
 		return "File not found!!";
@@ -340,17 +337,35 @@ void ERModel::inputPrimaryKeyFromFile( ofstream& myfile )
 		}
 	}
 }
+string ERModel::printSaveFileHint()
+{
+	if (_hint)
+	{
+		return "Save file succeeded.";
+	}
+	else
+	{
+		return "No Components to save file!";
+	}
+}
 void ERModel::saveFile(string _fileName)
 {
-	ofstream myfile(_fileName);
-	if(myfile.is_open())
+	cout << _components.size();
+	if (_components.size()!=0)
 	{
-		inputComponentToFile(myfile);
-		inputConnectionToFile(myfile);
-		inputPrimaryKeyFromFile(myfile);
-		myfile.close();
+		ofstream myfile(_fileName);
+		if(myfile.is_open())
+		{
+			inputComponentToFile(myfile);
+			inputConnectionToFile(myfile);
+			inputPrimaryKeyFromFile(myfile);
+			myfile.close();
+		}
+		_hint = true;
 	}
-	else cout << "Unable to open file";
+	else 
+		_hint =false;
+		
 }
 void ERModel::setPrimaryKeysVector(Component* component)
 {
@@ -372,10 +387,10 @@ void ERModel::addPrimaryKeyFromFile(vector<string> primaryKeyVectorFromFile)//從
 		_primaryKeys.push_back(component);
 	}
 }
-bool ERModel::checkAddConnectionNodeTwo()//檢查第二個connected node
+bool ERModel::checkAddConnectionNodeTwo(string nodeTwo)//檢查第二個connected node
 {
-	cin >> _nodeIDTwo;
-	if (_nodeIDTwo == ZERO_STRING)//string 不用轉換前就是0
+	
+	if (nodeTwo == ZERO_STRING)//string 不用轉換前就是0
 	{
 		return true;
 	}
@@ -383,7 +398,7 @@ bool ERModel::checkAddConnectionNodeTwo()//檢查第二個connected node
 	{
 		for (unsigned int i = 0; i < _components.size(); i++)
 		{
-			if ((atoi(_nodeIDTwo.c_str()) == _components[i]->getID()) && (atoi(_nodeIDTwo.c_str())!=0))
+			if ((atoi(nodeTwo.c_str()) == _components[i]->getID()) && (atoi(nodeTwo.c_str())!=0))
 			{
 				return true;
 			}
@@ -392,61 +407,140 @@ bool ERModel::checkAddConnectionNodeTwo()//檢查第二個connected node
 		return false;
 	}
 }
-void ERModel::connectTwoNode()//connect nodes
+string ERModel::printConnectNodesHint()
 {
-	if (checkAddConnectionNodeTwo()) 
+	return checkConnectHint;
+
+}
+void ERModel::clearCheckConnectHint()
+{
+	checkConnectHint = "";
+}
+void ERModel::printDisconnectItselfHint(int node)
+{
+	cout << "&"<<endl;
+	checkConnectHint = "The Node '";
+	checkConnectHint += intToString(node);
+	checkConnectHint += "' cannot be connected to itself.";
+	checkConnectHint += "\n";
+	clearConnectionNodesVector();
+}
+void ERModel::printDisconnectSameTypeHint(int nodeOne, int nodeTwo)
+{
+	cout << "@~"<<endl;
+	checkConnectHint = "The node '";
+	checkConnectHint += intToString(nodeOne);
+	checkConnectHint += "' cannot be connected by the node '";
+	checkConnectHint += intToString(nodeTwo);
+	checkConnectHint += "'.\n"; 
+	clearConnectionNodesVector();
+}
+void ERModel::printDisconnectExistHint(int nodeOne,int nodeTwo)
+{
+	cout << "***"<<endl;
+	checkConnectHint = "The node '";
+	checkConnectHint += intToString(nodeOne);
+	checkConnectHint += "' has already been connected to node '";
+	checkConnectHint += intToString(nodeTwo);
+	checkConnectHint += "'.\n";
+	clearConnectionNodesVector();
+}
+void ERModel::printDisconnectConditionHint(int nodeOne, int nodeTwo)
+{
+	cout << "+++"<<endl;
+	checkConnectHint = "The node '";
+	checkConnectHint += intToString(nodeOne);
+	checkConnectHint += "' cannot be connected by the node '";
+	checkConnectHint += intToString(nodeTwo);
+	checkConnectHint += "'.\n";
+	clearConnectionNodesVector();
+}
+void ERModel::examineTwoNodes()//connect nodes
+{
+	_canConnect = false;
+	if (_connectionNodesVector[1] == _connectionNodesVector[0])//itself
 	{
-		cout << _nodeIDTwo<<endl;
-		setConnectionNodes(atoi(_nodeIDTwo.c_str()));
-		cout << _connectionNodesVector.size() <<endl;
-		if (_connectionNodesVector[1] == _connectionNodesVector[0])//itself
-		{
-			cout << "&"<<endl;
-			cout << "The Node '" <<  _connectionNodesVector[1] <<"' cannot be connected to itself." << endl;
-			_connectionNodesVector.clear();
-		}//same type
-		else if (_components[_connectionNodesVector[1]]->getType() == _components[_connectionNodesVector[0]]->getType())
-		{
-			cout << "@~"<<endl;
-			cout << "The node '" <<  _connectionNodesVector[1] <<"' cannot be connected by the node '"<<  _connectionNodesVector[0] <<"'."<<endl; 
-		    _connectionNodesVector.clear();
-		}//已連過同一條connector
-		else if (checkExistConnection(_connectionNodesVector))//true: 已存在
-		{
-			cout << "***"<<endl;
-			cout << "The node '" << _connectionNodesVector[1]<<"' has already been connected to node '" << _connectionNodesVector[0] <<"'."<<endl;
-		    _connectionNodesVector.clear();
-		}
-		else if (!(_components[_connectionNodesVector[1]]->canConnectTo(_components[_connectionNodesVector[0]]))&&(_components[_connectionNodesVector[0]]->canConnectTo(   _components[_connectionNodesVector[1]])))
-		{
-			cout << "+++"<<endl;
-			cout << "The node '"<<_connectionNodesVector[1]<<"' cannot be connected by the node '"<< _connectionNodesVector[0]<<"'."<<endl;
-		    _connectionNodesVector.clear();
-		}
-		else
-		{
-			cout << "The node '"<<_connectionNodesVector[1]<<"' has been connected to the node '"<<_connectionNodesVector[0]<<"'."<<endl;
-			createConnector(_connectionNodesVector);
-			_connections.push_back(_components[getIndexOfComponentID(_connectionNodesVector[0])]);
-			_connections.push_back(_components[getIndexOfComponentID(_connectionNodesVector[1])]);
-			displayConnectionTable();
-			_connectionNodesVector.clear();
-		}
+		printDisconnectItselfHint(_connectionNodesVector[1]);
+	}//same type
+	else if (convertIdtoComponent(_connectionNodesVector[1])->getType() == convertIdtoComponent(_connectionNodesVector[0])->getType())//type相同
+	{
+		printDisconnectSameTypeHint(_connectionNodesVector[1], _connectionNodesVector[0]);
+	}//已連過同一條connector
+	else if (checkExistConnection(_connectionNodesVector))//true: 已存在
+	{
+		printDisconnectExistHint(_connectionNodesVector[1], _connectionNodesVector[0]);
+	}
+	else if (!(convertIdtoComponent(_connectionNodesVector[0])->canConnectTo(convertIdtoComponent(_connectionNodesVector[1]))) || !(convertIdtoComponent(_connectionNodesVector[1])->canConnectTo(convertIdtoComponent(_connectionNodesVector[0]))))//個別定義不能連
+	{
+		printDisconnectConditionHint(_connectionNodesVector[1], _connectionNodesVector[0]);
 	}
 	else
 	{
-		cout << "The node ID you entered does not exist." <<endl;
-		_connectionNodesVector.clear();
+		_canConnect = true;
+		printConnectedSuccessedHint(_connectionNodesVector[1], _connectionNodesVector[0]);
+		
+		/*createConnector(_connectionNodesVector);
+		
+		_connections.push_back(convertIdtoComponent(_connectionNodesVector[0])]);
+		_connections.push_back(convertIdtoComponent(_connectionNodesVector[1])]);
+		displayConnectionTable();
+		clearConnectionNodesVector();*/
 	}
 }
-void ERModel::createConnector(vector<int> connectionNodes)//生出connector
+bool ERModel::getCanConnectBool()
+{
+	return _canConnect;
+}
+void ERModel::setConnectionsVector()
+{
+	_connections.push_back(convertIdtoComponent(_connectionNodesVector[0]));
+	_connections.push_back(convertIdtoComponent(_connectionNodesVector[1]));
+}
+void ERModel::printConnectedSuccessedHint(int nodeOne, int nodeTwo)
+{
+	checkConnectHint = "The node '";
+	checkConnectHint += intToString(nodeOne);
+	checkConnectHint += "' has been connected to the node '";
+	checkConnectHint += intToString(nodeTwo);
+	checkConnectHint += "'.\n";
+}
+void ERModel::clearConnectionNodesVector()
+{
+		_connectionNodesVector.clear();
+}
+Component* ERModel::createConnector()//生出connector
 {
 	_componentFactory = new ComponentFactory();
 	Component* component = _componentFactory->createComponent(CONNECTOR);
 	component->setID(_id);
 	updateID();
 	component->setType(CONNECTOR);
-	if ((_components[connectionNodes[0]]->getType() == RELATIONSHIP) || (_components[connectionNodes[1]]->getType() == RELATIONSHIP))
+	if ((convertIdtoComponent(_connectionNodesVector[0])->getType() == RELATIONSHIP) || (convertIdtoComponent(_connectionNodesVector[1])->getType() == RELATIONSHIP))
+	{
+		_hint = true;
+	}
+	else
+	{
+		_hint = false;
+	}
+	return component;
+	/*setRelationConnectorText(connectionNodes, component);
+
+	
+	_components.push_back(component);
+	_connections.push_back(component);*/
+}
+//void ERModel::setConnectorText(string cardinality)
+//{
+//	
+//		
+//	}
+//	else
+//	{
+//		component->setText(BLANK);
+//	}
+
+	/*if ((convertIdtoComponent[connectionNodes[0]]->getType() == RELATIONSHIP) || (convertIdtoComponent[connectionNodes[1]]->getType() == RELATIONSHIP))
 	{
 		string cardinality;
 		string cardinalityTemp;
@@ -462,23 +556,20 @@ void ERModel::createConnector(vector<int> connectionNodes)//生出connector
 			component->setText("N");
 			cardinalityTemp = "N";
 		}
-		else
-		{
-			cout << "Wrong cardinality."<<endl;
-		}
+		
 		cout << "Its cardinality of the relationship is '"<< cardinalityTemp << "'."<< endl;
 	}
 	else
 	{
 		component->setText(BLANK);
-	}
-	_components.push_back(component);
-	_connections.push_back(component);
-}
+	}*/
+//}
 bool ERModel::checkExistConnection(vector<int> connectionNodes)//檢查是否存在此connection
 {
+	//cout << "present connection size:"<< _connections.size() <<endl;
 	for (unsigned  int i = 0; i < _connections.size(); i++)
 	{
+		//cout << "for= " << i << endl;
 		if (i%3 != 0)
 		{
 			if (_connections[i]->getID() == connectionNodes[0])
@@ -487,14 +578,24 @@ bool ERModel::checkExistConnection(vector<int> connectionNodes)//檢查是否存在此c
 				{
 					return true;
 				}
+				i = i + 1;
+				//cout << "i= " << i << endl;
 			}
-			else if (_connections[i]->getID() == connectionNodes[1])
+			else if (_connections[i+1]->getID() == connectionNodes[0])
 			{
-				if (_connections[i+1]->getID() == connectionNodes[0])
+				if (_connections[i]->getID() == connectionNodes[1])
 				{
 					return true;
 				}
+				i=i+TWO;
 			}
+			else
+			{
+				i=i+TWO;
+				
+			}
+			
+				//cout << "@@@i=" << i <<endl;
 		}
 	}
 	return false;
@@ -514,26 +615,7 @@ string ERModel::getWholeName(string type)//取得全名
 	else
 		return NONAME;
 }
-int ERModel::checkAddConnectionNodeOneLoop()//檢查第一個要connect的點
-{
-	cin >> _nodeIDOne;
-	if (_nodeIDOne == ZERO_STRING)//string 不用轉換前就是0
-	{
-		return atoi(_nodeIDOne.c_str());
-	}
-	else 
-	{
-		for (unsigned int i = 0; i < _components.size(); i++)
-		{
-			if ((atoi(_nodeIDOne.c_str()) == _components[i]->getID()) && (atoi(_nodeIDOne.c_str())!=0))
-			{
-				return atoi(_nodeIDOne.c_str());
-			}
-		}
-		cout << "The node ID you entered does not exist. Please enter a valid one again." <<endl<<"> ";
-		checkAddConnectionNodeOneLoop();
-	}
-}
+
 void ERModel::setPrimaryKey()//設定primary key
 {
 	cout << "Enter the ID of the entity:" << endl << "> ";
@@ -704,17 +786,20 @@ void ERModel::displayTable()//show entity and it attributies table
 	}
 	cout << endl<<"------------------------------------" << endl;
 }
-void ERModel::displayConnectionTable()//show connection table
+string ERModel::displayConnectionTable()//show connection table
 {
-	cout << "Connections:" <<endl;
-	cout << "------------------------------------" << endl;
-	cout << "Connection | node | node  " << endl;
-	cout << "------- ---+------+-----------------" << endl;
-	for (unsigned int i = 0; i < _connections.size();i = i+3)
-		cout << setw(6) << _connections[i]->getID() << "     |  "<<setw(2) << _connections[i+1]->getID() << "  |  "<<setw(2) << _connections[i+2]->getID() << endl;
-	cout << "------------------------------------" << endl;
+	string totalTable =  "Connections:\n------------------------------------\nConnection | node | node  \n------- ---+------+-----------------\n" ;
+	for (unsigned int i = 0; i < _connections.size();i = i+THREE)
+	{
+		totalTable += intToString(_connections[i]->getID());
+		totalTable += "     |  ";
+		totalTable += intToString(_connections[i+1]->getID());
+		totalTable += "  |  ";
+		totalTable += intToString(_connections[i+TWO]->getID());
+		totalTable += "\n";
+	}
+	return totalTable;
 }
-
 void ERModel::deleteComponent(int id)//delete component
 {
 	setDeleteID(id);
@@ -781,6 +866,7 @@ int ERModel::getIndexOfComponentID(int componentID)//用 id 轉換成 components vec
 		if(_components[i]->getID() == componentID)
 			return i;
 	}
+	return -2;
 }
 int ERModel::getIndexOfConnectionsID(int connectionsID)//用 id 轉換成connections vector 的 index
 {
@@ -789,5 +875,30 @@ int ERModel::getIndexOfConnectionsID(int connectionsID)//用 id 轉換成connections
 		if (_connections[i]->getID() == connectionsID)
 			return i;
 	}
+	return -1;
 }
-
+int ERModel::checkAddConnectionNode(string nodeOne)
+{
+	if (nodeOne == ZERO_STRING)//string 不用轉換前就是0
+	{
+		_hint = true;
+		return atoi(nodeOne.c_str());
+	}
+	else 
+	{
+		for (unsigned int i = 0; i < _components.size(); i++)
+		{
+			if ((atoi(nodeOne.c_str()) == _components[i]->getID()) && (atoi(nodeOne.c_str())!=0))
+			{
+				_hint = true;
+				return atoi(nodeOne.c_str());
+			}
+		}
+		_hint = false;
+		return -1;
+	}
+}
+bool ERModel::getHint()
+{
+	return _hint;
+}

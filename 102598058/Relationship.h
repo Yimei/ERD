@@ -15,6 +15,6 @@ public:
 	bool canConnectTo(Component* component);
 	void setConnections(Component* component);
 private:
-	vector<Component*> _connectedEntity;
+	vector<Component*> _connectedEntityVector;
 };
 #endif

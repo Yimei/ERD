@@ -5,8 +5,8 @@
 using namespace std;
 Attribute::Attribute():Node()
 {	
-	for (unsigned int i = 0; i < _connectedEntity.size();i++)
-		_connectedEntity.push_back(NULL);
+	/*for (unsigned int i = 0; i < _connectedEntity.size();i++)
+		_connectedEntity.push_back(NULL);*/
 }
 void Attribute::connectTo(Component* component)
 {
@@ -23,8 +23,7 @@ bool Attribute::canConnectTo(Component* component){
 	else
 	{
 		_connectedEntity.push_back(component);
-		//return true;
-		connectedEntity.push_back(component);
+		return true;
 	}
 }
 vector<Component*> Attribute::getConnections()

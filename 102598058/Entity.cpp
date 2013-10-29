@@ -1,22 +1,17 @@
 #include <string>
 #include <iostream>
 #include "Entity.h"
-#define E "E"
 using namespace std;
-Entity::Entity():Node(){
+Entity::Entity():Node()
+{
 }
-void Entity::connectTo(Component* component){
+void Entity::connectTo(Component* component)
+{
 }
-bool Entity::canConnectTo(Component* component){
-	if (component->getType() == E)//¬Orelationship ©Î attribute
-	{
-		return false;
-	}
-	else 
-	{
-		setConnections(component);
-		return true;
-	}
+bool Entity::canConnectTo(Component* component)
+{
+	setConnections(component);
+	return true;
 }
 void Entity::setConnections(Component* component)
 {
@@ -26,5 +21,6 @@ vector<Component*> Entity::getConnections()
 {
 	return _connectedNodesVector;
 }
-Entity::~Entity(){
+Entity::~Entity()
+{
 }

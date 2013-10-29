@@ -15,5 +15,7 @@ private:
 	Component* _componentCopy;
 	string _componentType;
 	vector<Component*> _connectionsCopy; 
+	string _nodeTwo;
+	
 };
 #endif

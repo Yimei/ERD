@@ -13,6 +13,7 @@
 #define UNDO "9"
 #define REDO "10"
 #define EXIT "11"
+#define BLANK " "
 using namespace std;
 TextUI::TextUI(ERModel* model)
 {
@@ -20,7 +21,7 @@ TextUI::TextUI(ERModel* model)
 }
 TextUI::~TextUI()
 {
-	delete _eRModel;
+	//delete _eRModel;
 }
 void TextUI::displayMenu()
 {
@@ -41,12 +42,12 @@ void TextUI::processCommand(){
 	cin >> _command;
 	if (_command == LOAD_FILE)
 	{
+		
 		_eRModel = new ERModel();
 		cout << "Please input a file path: ";
 		cin >> _filePath;
 		_eRModel->loadFile(_filePath);
-
-		cout << _eRModel->showComponentTable() << endl;
+		cout << _eRModel->printLoadFileHint() << endl;
 		displayMenu();
 	}
 	else if (_command == SAVE_FILE)
@@ -54,6 +55,7 @@ void TextUI::processCommand(){
 		cout << "Please input the file name: ";
 		cin >> _fileName;//輸出的檔名路徑
 		_eRModel->saveFile(_fileName);
+		cout << _eRModel->printSaveFileHint() << endl;
 		displayMenu();
 	}
 	else if (_command == ADD_A_NODE)
@@ -62,7 +64,7 @@ void TextUI::processCommand(){
 		cin >> _type;
 		while ((_type != "A")&&(_type != "E")&&(_type != "R"))
 		{
-			cout << "You entered an invalid node. Please enter a valid one again.\n[A]Attribute [E]Entity [R]Relation" << endl<<"> ";
+			cout << "You entered an invalid node. Please enter a valid one again.\n[A]Attribute [E]Entity [R]Relation" << endl <<"> ";
 			cin >> _type;
 		}
 		cout<< "Enter the name of this node:" << endl<<"> ";
@@ -76,16 +78,27 @@ void TextUI::processCommand(){
 	else if (_command == CONNECT_TWO_NODES)
 	{
 		cout << "Please enter the first node ID "<< endl << "> ";
-		_eRModel->setConnectionNodes(_eRModel->checkAddConnectionNodeOneLoop());
+		_eRModel->setConnectionNodes(checkAddConnectionNodeOneLoop());//nodeOne 丟進vector裡
 		cout << "Please enter the second node ID "<< endl << "> ";
+		setAddConnectionNodeTwo();//nodeTwo 丟進 vector 裡
 		_eRModel->connectComponentPresentation();
+		cout <<_eRModel->printConnectNodesHint();
+		_eRModel->clearCheckConnectHint();
+		if (_eRModel->getCanConnectBool())
+		{
+			Component* component = _eRModel->createConnector();
+			setRelationConnectorText(component);
+			_eRModel->setConnectionsVector();
+			cout << _eRModel->displayConnectionTable() << endl;
+		}
+		_eRModel->clearConnectionNodesVector();
 		displayMenu();
 	}
 	else if (_command == DISPLAY_DIAGRAM)
 	{
 		cout << "The ER diagram is displayed as follows:"<<endl<<"Nodes:"<<endl;
-		_eRModel->displayComponentTable();
-		_eRModel->displayConnectionTable();
+		cout << _eRModel->displayComponentTable() << endl;
+		cout << _eRModel->displayConnectionTable() << endl;
 		displayMenu();
 	}
 	else if (_command == SET_PRIMARY_KEY)
@@ -137,15 +150,67 @@ void TextUI::processCommand(){
 		displayMenu();
 	}
 }
-//void TextUI::printHintFile()
-//{
-//	if (_eRModel->printHint())
-//	{
-//		cout << "The ER diagram is displayed as follows:" << endl<<"Components: " << endl;
-//		_eRModel->displayComponentTable();
-//		_eRModel->displayConnectionTable();
-//	}
-//	else
-//		cout << "File not found!!"<<endl;
-//}
-
+int TextUI::checkAddConnectionNodeOneLoop()//檢查第一個要connect的點
+{
+	cin >> _nodeIDOne;
+	int nodeOneId = _eRModel->checkAddConnectionNode(_nodeIDOne);
+	if (_eRModel->getHint())
+	{
+		return nodeOneId;
+	}
+	else
+	{
+		cout << "The node ID you entered does not exist. Please enter a valid one again." << endl <<"> ";
+		checkAddConnectionNodeOneLoop();
+		return 0;
+	}
+}
+void TextUI::setAddConnectionNodeTwo()
+{
+	cin >> _nodeIDTwo;
+	int nodeTwoId = _eRModel->checkAddConnectionNode(_nodeIDTwo);
+	if (_eRModel->getHint())
+	{
+		_eRModel->setConnectionNodes(nodeTwoId);//nodeTwo 丟進vector裡
+		//return;
+	}
+	else
+	{
+		cout << "The node ID you entered does not exist."<< endl;
+		_eRModel->clearConnectionNodesVector();
+		//return 0;
+	}
+}
+void TextUI::setRelationConnectorText(Component* component)
+{
+	if(_eRModel->getHint())
+	{
+		string cardinality;
+		string cardinalityTemp;
+		cout << "Enter the type of the cardinality:" <<endl<<"[0]1 [1]N"<<endl<<"> ";
+		cin >> cardinality;
+		//_eRModel->setConnectorText(cardinality);
+		if (atoi(cardinality.c_str()) == 0)
+		{
+			component->setText("1");
+			cardinalityTemp = "1";
+		}
+		else if (atoi(cardinality.c_str()) == 1)
+		{
+			component->setText("N");
+			cardinalityTemp = "N";
+		}
+		else
+		{
+			cout << "Wrong cardinality number!"<<endl;
+		}
+		
+		cout << "Its cardinality of the relationship is '"<< cardinalityTemp << "'."<< endl;
+	}
+	else
+	{
+		component->setText(BLANK);
+	}
+	_eRModel->setComponentsVector(component);
+	_eRModel->setConnectionsVector(component);
+}

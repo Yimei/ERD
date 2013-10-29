@@ -27,7 +27,7 @@ private:
 	vector<Component*> _connectedEntity;
 
 	Connector* connector;
-	vector<Component*> connectedEntity;
+	
 	
 
 };

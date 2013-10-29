@@ -13,6 +13,7 @@ public:
 	void action_redo();
 	void action_undo();
 	void loadFileHint();
+	void setRelationConnectorText(Component*);
 private:
 	ERModel* _eRModel;
 	int _firstId;
@@ -21,5 +22,9 @@ private:
 	string _text;
 	string _filePath;
 	string _fileName;
+	int checkAddConnectionNodeOneLoop();
+	void setAddConnectionNodeTwo();
+	string _nodeIDOne;
+	string _nodeIDTwo;
 };
 #endif

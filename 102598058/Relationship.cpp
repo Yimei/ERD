@@ -4,19 +4,20 @@
 #define E "E"
 #define TWO 2
 using namespace std;
-Relationship::Relationship():Node(){
+Relationship::Relationship():Node()
+{
 	
 }
 void Relationship::connectTo(Component* component)
 {
 }
-bool Relationship::canConnectTo(Component* component){
-	
+bool Relationship::canConnectTo(Component* component)
+{
 	if (component->getType()!= E)
 	{
 		return false;
 	}
-	else if(_connectedEntity.size() == TWO)
+	else if(_connectedEntityVector.size() == TWO)
 	{
 		return false;
 	}
@@ -28,11 +29,11 @@ bool Relationship::canConnectTo(Component* component){
 }
 void Relationship::setConnections(Component* component)
 {
-	_connectedEntity.push_back(component);
+	_connectedEntityVector.push_back(component);
 }
 vector<Component*> Relationship::getConnections()
 {
-	return _connectedEntity;
+	return _connectedEntityVector;
 }
 Relationship::~Relationship(){
 
